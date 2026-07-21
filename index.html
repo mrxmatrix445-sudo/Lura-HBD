@@ -148,7 +148,6 @@
             margin-bottom: 12px;
             text-align: center;
         }
-        /* Music Control Badge */
         .music-badge {
             position: fixed;
             top: 15px;
@@ -170,12 +169,11 @@
 </head>
 <body>
 
-    <!-- Background Audio (Mahasti - Fadat Sham) -->
+    <!-- Working Audio Source -->
     <audio id="bgMusic" loop>
-        <source src="https://dl.musicsweb.ir/music/1402/08/Mahasti%20-%20Fadat%20Sham%20(128).mp3" type="audio/mp3">
+        <source src="https://cdns.musicsweb.ir/music/1402/08/Mahasti%20-%20Fadat%20Sham%20(128).mp3" type="audio/mp3">
     </audio>
 
-    <!-- Music Toggle Button -->
     <div class="music-badge" onclick="toggleMusic()">
         <span id="musicIcon">🎵</span> <span id="musicText">گۆرانی: لێدانی دەنگ</span>
     </div>
@@ -268,10 +266,11 @@
                 document.getElementById('musicIcon').innerText = "🔇";
                 document.getElementById('musicText').innerText = "گۆرانی: وەستاوە";
             } else {
-                music.play();
-                isPlaying = true;
-                document.getElementById('musicIcon').innerText = "🔊";
-                document.getElementById('musicText').innerText = "گۆرانی: لێدەدات";
+                music.play().then(() => {
+                    isPlaying = true;
+                    document.getElementById('musicIcon').innerText = "🔊";
+                    document.getElementById('musicText').innerText = "گۆرانی: لێدەدات";
+                });
             }
         }
 
