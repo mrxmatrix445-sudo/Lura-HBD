@@ -1,66 +1,291 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ku" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Love ❤️</title>
+    <title>تایبەت بە لۆرا گیان ❤️</title>
     <style>
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0b0708;
+            background-image: radial-gradient(circle at center, #2a080c 0%, #0b0708 100%);
+            color: #fce4e4;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             overflow: hidden;
-            color: #fff;
         }
-        .container {
+        .screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            z-index: 10;
+            width: 100%;
+            max-width: 400px;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            max-width: 90%;
-            width: 400px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        .screen.active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .panda-box {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 107, 129, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 0 25px rgba(255, 71, 87, 0.3);
+            background: rgba(255, 255, 255, 0.03);
+            font-size: 2.5rem;
         }
         h1 {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            color: #ff6b81;
-            text-shadow: 0 0 15px rgba(255, 107, 129, 0.5);
+            font-size: 1.8rem;
+            color: #ff879e;
+            margin-bottom: 10px;
+            font-weight: 500;
         }
         p {
-            font-size: 1.1rem;
-            line-height: 1.6;
+            color: #c5a8af;
+            font-size: 0.95rem;
             margin-bottom: 25px;
-            color: #f1f1f1;
         }
-        .heart {
-            font-size: 4rem;
-            color: #ff4757;
-            animation: pulse 1.2s infinite;
+        .btn {
+            background: linear-gradient(135deg, #4a151d, #2b0b10);
+            border: 1px solid rgba(255, 107, 129, 0.4);
+            color: #ffb3c1;
+            padding: 12px 35px;
+            border-radius: 30px;
+            font-size: 1rem;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: 0.3s;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        .btn:active {
+            transform: scale(0.95);
+        }
+        /* Lock Screen */
+        .lock-container {
+            background: rgba(20, 10, 12, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 107, 129, 0.2);
+            padding: 25px;
+            border-radius: 20px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .pass-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: 0.2s;
+        }
+        .dot.filled {
+            background: #ff6b81;
+            box-shadow: 0 0 10px #ff6b81;
+        }
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .key {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .key:active {
+            background: rgba(255, 107, 129, 0.3);
+        }
+        /* Counter Screen */
+        .counter-grid {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .time-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 107, 129, 0.2);
+            padding: 15px 10px;
+            border-radius: 12px;
+            min-width: 80px;
+        }
+        .time-box span {
+            display: block;
+            font-size: 1.5rem;
+            color: #ff879e;
+            font-weight: bold;
+        }
+        .time-box label {
+            font-size: 0.75rem;
+            color: #9c8289;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        /* Letter Screen */
+        .letter-box {
+            background: rgba(20, 10, 12, 0.8);
+            border: 1px solid rgba(255, 107, 129, 0.3);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: right;
+            max-height: 350px;
+            overflow-y: auto;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #f1d1d6;
+        }
+        .letter-box h3 {
+            color: #ff879e;
+            margin-bottom: 10px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>For You My Love ❤️</h1>
-        <p>You are the best thing that has ever happened to me. Thank you for making my life so beautiful.</p>
-        <div class="heart">❤️</div>
+    <!-- Screen 1: Welcome -->
+    <div id="screen1" class="screen active">
+        <div class="panda-box">🐼❤️</div>
+        <h1>ڕۆژی تایبەتی تۆ لۆرا گیان 🌸✨</h1>
+        <p>شتم بۆ دروستکردووی کە زۆر تایبەتە بۆتۆ... 🎁🥺</p>
+        <button class="btn" onclick="nextScreen(2)">دەستپێک 👁️‍🗨️✨</button>
     </div>
 
+    <!-- Screen 2: Password Lock -->
+    <div id="screen2" class="screen">
+        <div class="lock-container">
+            <div style="font-size: 2rem; margin-bottom: 5px;">🔒🔐</div>
+            <h2 style="font-size: 1.2rem; color: #ff879e; margin-bottom: 5px;">قفل کراوە 🛑</h2>
+            <p style="font-size: 0.8rem; margin-bottom: 15px;">تکایە ساڵی لەدایکبوونەکەت بنووسە (2008) 🔑✨</p>
+            
+            <div class="pass-dots">
+                <div class="dot" id="d1"></div>
+                <div class="dot" id="d2"></div>
+                <div class="dot" id="d3"></div>
+                <div class="dot" id="d4"></div>
+            </div>
+
+            <div class="keypad">
+                <button class="key" onclick="pressKey('1')">1</button>
+                <button class="key" onclick="pressKey('2')">2</button>
+                <button class="key" onclick="pressKey('3')">3</button>
+                <button class="key" onclick="pressKey('4')">4</button>
+                <button class="key" onclick="pressKey('5')">5</button>
+                <button class="key" onclick="pressKey('6')">6</button>
+                <button class="key" onclick="pressKey('7')">7</button>
+                <button class="key" onclick="pressKey('8')">8</button>
+                <button class="key" onclick="pressKey('9')">9</button>
+                <button class="key" onclick="pressKey('0')">0</button>
+                <button class="key" onclick="clearPass()" style="font-size: 0.9rem;">C ❌</button>
+                <button class="key" onclick="submitPass()" style="font-size: 0.9rem;">✓ ✨</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 3: Counter / Timer -->
+    <div id="screen3" class="screen">
+        <div class="panda-box">🧸💖</div>
+        <h1>بەخێر هاتیت لۆرا گیان 🎀✨</h1>
+        <p>تۆ تەمەنت تەواو کردووە لە 🎂👇</p>
+        
+        <div class="counter-grid">
+            <div class="time-box">
+                <span id="years">18</span>
+                <label>ساڵ 🗓️</label>
+            </div>
+            <div class="time-box">
+                <span id="months">0</span>
+                <label>مانگ 🌙</label>
+            </div>
+            <div class="time-box">
+                <span id="days">0</span>
+                <label>ڕۆژ ☀️</label>
+            </div>
+        </div>
+
+        <button class="btn" onclick="nextScreen(4)" style="margin-top: 20px;">دواتر 💌✨</button>
+    </div>
+
+    <!-- Screen 4: Letter -->
+    <div id="screen4" class="screen">
+        <div class="letter-box">
+            <h3>بۆ لۆرا گیانی من ❤️✨</h3>
+            <p>لۆرا گیان، تۆ جوانترین بەشی ژیانی منی، زۆر بەختەوەرم کە تۆم هەیە. پێکەنینی تۆ ڕۆژەکانم بەختەوەرتر دەکات، و بوونی تۆ هەموو شتێک بە تایبەت دەکات. هیوادارم ڕۆژی لەدایکبوونەکەت پڕ بێت لە خۆشی، خۆشەویستی، و پێکەنینی بێپوختار! 🥰🌸💖</p>
+            <br>
+            <p style="text-align: center; color: #ff879e;">هەمیشە بەخۆشی بمێنەوە لۆرا گیان — چونکە خۆشحاڵی تۆ بۆ من زۆر شت دەگەیەنێت! 🥺❤️✨</p>
+        </div>
+        <button class="btn" onclick="nextScreen(1)" style="margin-top: 20px;">دووبارە دەستپێکرنەوە 🔄💫</button>
+    </div>
+
+    <script>
+        let currentPass = "";
+        const correctPass = "2008"; // پاسووردی نوێ کرایە 2008
+
+        function nextScreen(screenNum) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen' + screenNum).classList.add('active');
+        }
+
+        function pressKey(num) {
+            if (currentPass.length < 4) {
+                currentPass += num;
+                updateDots();
+            }
+        }
+
+        function clearPass() {
+            currentPass = "";
+            updateDots();
+        }
+
+        function updateDots() {
+            for (let i = 1; i <= 4; i++) {
+                const dot = document.getElementById('d' + i);
+                if (i <= currentPass.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            }
+        }
+
+        function submitPass() {
+            if (currentPass === correctPass) {
+                nextScreen(3);
+                currentPass = "";
+                updateDots();
+            } else {
+                alert("پاسووردەکە هەڵەیە لۆرا گیان! تکایە (2008) تاقی بکەرەوە ❌");
+                clearPass();
+            }
+        }
+    </script>
 </body>
 </html>
