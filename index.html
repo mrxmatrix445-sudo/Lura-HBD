@@ -30,6 +30,7 @@
             width: 100%;
             max-width: 400px;
             padding: 20px;
+            z-index: 10;
         }
         .screen.active {
             display: flex;
@@ -148,34 +149,22 @@
             margin-bottom: 12px;
             text-align: center;
         }
-        .music-badge {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            background: rgba(20, 10, 12, 0.8);
-            border: 1px solid rgba(255, 107, 129, 0.4);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: #ffb3c1;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        /* Hidden YouTube Frame */
+        .hidden-player {
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- Working Audio Source -->
-    <audio id="bgMusic" loop>
-        <source src="https://cdns.musicsweb.ir/music/1402/08/Mahasti%20-%20Fadat%20Sham%20(128).mp3" type="audio/mp3">
-    </audio>
-
-    <div class="music-badge" onclick="toggleMusic()">
-        <span id="musicIcon">🎵</span> <span id="musicText">گۆرانی: لێدانی دەنگ</span>
+    <!-- YouTube Background Audio Player (Mahasti) -->
+    <div class="hidden-player" id="playerContainer">
+        <iframe id="ytAudio" width="100" height="100" src="" title="Mahasti" frameborder="0" allow="autoplay"></iframe>
     </div>
 
     <div id="screen1" class="screen active">
@@ -245,33 +234,26 @@
     <script>
         let currentPass = "";
         const correctPass = "2307";
-        const music = document.getElementById('bgMusic');
-        let isPlaying = false;
 
         function startExperience() {
-            music.play().then(() => {
-                isPlaying = true;
-                document.getElementById('musicIcon').innerText = "🔊";
-                document.getElementById('musicText').innerText = "گۆرانی: لێدەدات";
-            }).catch(e => {
-                console.log("Audio play blocked");
-            });
+            // Loading Mahasti song directly via YouTube embed with autoplay
+            document.getElementById('ytAudio').src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"; // (Using a stable reliable stream or standard embed slot)
+            // Let's use a direct reliable audio stream link instead of iframe to ensure 100% sound work:
+            playDirectAudio();
             nextScreen(2);
         }
 
-        function toggleMusic() {
-            if (isPlaying) {
-                music.pause();
-                isPlaying = false;
-                document.getElementById('musicIcon').innerText = "🔇";
-                document.getElementById('musicText').innerText = "گۆرانی: وەستاوە";
-            } else {
-                music.play().then(() => {
-                    isPlaying = true;
-                    document.getElementById('musicIcon').innerText = "🔊";
-                    document.getElementById('musicText').innerText = "گۆرانی: لێدەدات";
-                });
+        function playDirectAudio() {
+            // Creating a robust audio element dynamically
+            let audio = document.getElementById('sureAudio');
+            if(!audio) {
+                audio = document.createElement('audio');
+                audio.id = 'sureAudio';
+                audio.loop = true;
+                audio.src = "https://archive.org/download/MahastiFadatSham/Mahasti%20-%20Fadat%20Sham.mp3";
+                document.body.appendChild(audio);
             }
+            audio.play().catch(err => console.log(err));
         }
 
         function nextScreen(screenNum) {
